@@ -6,7 +6,7 @@
           <input v-model="form.rib" class="form-control" type="text" name="rib" placeholder="RIB">
         </div>
         <div class="col-md-3">
-          <datepicker v-model="form.minDate" name="minDate" placeholder="Date min" :bootstrap-styling="true" :format="customFormatter" :use-utc="true"></datepicker>
+          <datepicker v-model="form.minDate" name="minDate" placeholder="Date min" @selected="selectMinDate" :bootstrap-styling="true" :format="customFormatter" :use-utc="true"></datepicker>
         </div>
         <div class="col-md-3">
           <datepicker v-model="form.maxDate" name="maxDate" placeholder="Date max" :bootstrap-styling="true" :format="customFormatter" :use-utc="true"></datepicker>
@@ -48,6 +48,10 @@ export default {
   methods: {
     customFormatter(date) {
       return moment(date).format('DD/MM/yyyy');
+    },
+
+    selectMinDate(selectedDate) {
+      this.form.maxDate = selectedDate;
     },
 
     async searchOperation () {
