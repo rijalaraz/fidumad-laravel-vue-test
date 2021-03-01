@@ -16,16 +16,22 @@
         </div>
       </div>
     </form>
+
+    <div class="card-body">
+      <grid :data="gridData" :columns="gridColumns"></grid>
+    </div>
   </card>
 </template>
 
 <script>
 import Form from 'vform'
 import Datepicker from 'vuejs-datepicker'
+import Grid from './../components/Grid'
 
 export default {
   components: { 
-    Datepicker
+    Datepicker,
+    Grid
   },
   middleware: 'auth',
 
@@ -34,12 +40,16 @@ export default {
       minDate: '',
       maxDate: '',
       rib: ''
-    })
+    }),
+    gridData: [],
+    gridColumns: ['RIB', 'Date', 'Libelle', 'Montant'],
   }),
 
   methods: {
     async searchOperation () {
       const { data } = await this.form.post('/api/operation')
+
+      this.gridData = data.operations;
 
       // this.form.reset()
     }
