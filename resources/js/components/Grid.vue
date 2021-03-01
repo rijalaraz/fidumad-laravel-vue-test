@@ -156,6 +156,23 @@ th.active .arrow {
   display: -webkit-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
-  width: 600px;
+  width: 1000px;
+}
+
+.wrapper{
+  height: 300px;
+}
+
+#grid-template > .table-body-wrapper {
+  width: 100%;
+  overflow-y: scroll;
+}
+
+#grid-template {
+  height: 100%;
+}
+
+#grid-template > .table-body-wrapper {
+  flex: 1;
 }
 </style>
