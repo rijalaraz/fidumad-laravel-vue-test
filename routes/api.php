@@ -28,7 +28,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('user', [UserController::class, 'current']);
 
-    Route::get('operation', [OperationController::class, 'getList']);
+    Route::post('operation', [OperationController::class, 'getList']);
 
     Route::patch('settings/profile', [ProfileController::class, 'update']);
     Route::patch('settings/password', [PasswordController::class, 'update']);

@@ -12,7 +12,7 @@ class OperationController extends Controller
     public function getList(Request $request)
     {
         $response = Http::get(self::API_URL);
-        $operations = $response->json()['operations'];
+        $operations = $response->json();
         return response()->json($operations);
     }
 }
