@@ -21,10 +21,10 @@
     </card>
     <card>
       <div class="row justify-content-end align-items-center">
-        <div class="col-4">
-          <button type="button" class="btn btn-primary" @click="calculateAccountBalance" >Calculer le solde du compte sur la période</button>
+        <div class="col-5">
+          <button type="button" class="btn btn-primary" @click="calculateAccountBalance" >Calculer le solde du compte sur cette période</button>
         </div>
-        <div class="col-4">
+        <div class="col-3">
           {{ accountBalance }}
         </div>
       </div>
@@ -67,7 +67,9 @@ export default {
     },
 
     selectMinDate(selectedDate) {
-      this.form.maxDate = selectedDate;
+      if(selectedDate > this.form.maxDate) {
+        this.form.maxDate = selectedDate;
+      }
     },
 
     calculateAccountBalance() {
