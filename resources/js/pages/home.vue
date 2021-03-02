@@ -13,7 +13,7 @@
             <datepicker v-model="form.maxDate" name="maxDate" placeholder="Date max" :bootstrap-styling="true" :format="customFormatter" :use-utc="true"></datepicker>
           </div>
           <div class="col-md-2">
-            <button type="submit" class="btn btn-primary">Rechercher</button>
+            <button type="submit" class="btn btn-success">Rechercher</button>
           </div>
         </div>
       </form>
@@ -22,7 +22,7 @@
     <card>
       <div class="row justify-content-end align-items-center">
         <div class="col-5">
-          <button type="button" class="btn btn-primary" @click="calculateAccountBalance" >Calculer le solde du compte sur cette période</button>
+          <button type="button" class="btn btn-success" @click="calculateAccountBalance" >Calculer le solde du compte sur cette période</button>
         </div>
         <div class="col-3">
           {{ accountBalance }}
