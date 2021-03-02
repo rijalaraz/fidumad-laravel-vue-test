@@ -157,6 +157,7 @@ th.active .arrow {
   flex-direction: column;
   -webkit-flex-direction: column;
   width: 100%;
+  height: 100%;
 }
 
 .wrapper{
@@ -166,10 +167,6 @@ th.active .arrow {
 #grid-template > .table-body-wrapper {
   width: 100%;
   overflow-y: scroll;
-}
-
-#grid-template {
-  height: 100%;
 }
 
 #grid-template > .table-body-wrapper {
