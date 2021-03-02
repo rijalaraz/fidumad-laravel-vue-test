@@ -1,23 +1,36 @@
 <template>
-  <card title="Opérations">
-    <form @submit.prevent="searchOperation" @keydown="form.onKeydown($event)">
-      <div class="form-group row">
-        <div class="col-md-4">
-          <input v-model="form.rib" class="form-control" type="text" name="rib" placeholder="RIB">
+  <div>
+    <card title="Opérations">
+      <form @submit.prevent="searchOperation" @keydown="form.onKeydown($event)">
+        <div class="form-group row">
+          <div class="col-md-4">
+            <input v-model="form.rib" class="form-control" type="text" name="rib" placeholder="RIB">
+          </div>
+          <div class="col-md-3">
+            <datepicker v-model="form.minDate" name="minDate" placeholder="Date min" @selected="selectMinDate" :bootstrap-styling="true" :format="customFormatter" :use-utc="true"></datepicker>
+          </div>
+          <div class="col-md-3">
+            <datepicker v-model="form.maxDate" name="maxDate" placeholder="Date max" :bootstrap-styling="true" :format="customFormatter" :use-utc="true"></datepicker>
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+          </div>
         </div>
-        <div class="col-md-3">
-          <datepicker v-model="form.minDate" name="minDate" placeholder="Date min" @selected="selectMinDate" :bootstrap-styling="true" :format="customFormatter" :use-utc="true"></datepicker>
+      </form>
+      <grid :data="gridData" :columns="gridColumns"></grid>
+    </card>
+    <card>
+      <div class="row justify-content-end align-items-center">
+        <div class="col-4">
+          <button type="button" class="btn btn-primary" @click="calculateAccountBalance" >Calculer le solde du compte sur la période</button>
         </div>
-        <div class="col-md-3">
-          <datepicker v-model="form.maxDate" name="maxDate" placeholder="Date max" :bootstrap-styling="true" :format="customFormatter" :use-utc="true"></datepicker>
-        </div>
-        <div class="col-md-2">
-          <button type="submit" class="btn btn-primary">Rechercher</button>
+        <div class="col-4">
+          {{ accountBalance }}
         </div>
       </div>
-    </form>
-    <grid :data="gridData" :columns="gridColumns"></grid>
-  </card>
+    </card>
+  </div>
+
 </template>
 
 <script>
@@ -45,6 +58,7 @@ export default {
     }),
     gridData: [],
     gridColumns: ['RIB', 'Date', 'Libelle', 'Montant', 'Recette', 'Dépense'],
+    accountBalance: accounting.formatMoney(0, getSymbolFromCurrency('EUR'), 2, ".", ",")
   }),
 
   methods: {
@@ -54,6 +68,32 @@ export default {
 
     selectMinDate(selectedDate) {
       this.form.maxDate = selectedDate;
+    },
+
+    calculateAccountBalance() {
+      if( this.gridData.length == 0 ) {
+        Swal.fire({
+          icon: 'error',
+          title: i18n.t('error_alert_title'),
+          text: i18n.t('error_alert_text'),
+          reverseButtons: true,
+          confirmButtonText: i18n.t('ok'),
+          cancelButtonText: i18n.t('cancel')
+        })
+        return false;
+      }
+
+      const recetteSum = this.gridData.reduce((a, b) => {
+          return a + accounting.unformat(b.Recette, ",");
+      },0);
+
+      const depenseSum = this.gridData.reduce((a, b) => {
+          return a + accounting.unformat(b.Dépense, ",");
+      },0);
+
+      const currency = this.gridData[0].Devise == 'Euro' ? getSymbolFromCurrency('EUR') : getSymbolFromCurrency(this.gridData[0].Devise);
+
+      this.accountBalance = accounting.formatMoney(recetteSum - depenseSum, currency, 2, ".", ",");
     },
 
     async searchOperation () {
@@ -74,7 +114,9 @@ export default {
         return false;
       }
 
-      const { data } = await this.form.post('/api/operation')
+      const { data } = await this.form.post('/api/operation');
+
+      this.accountBalance = accounting.formatMoney(0, getSymbolFromCurrency('EUR'), 2, ".", ",");
       
       this.gridData = data.operations.filter(operation => {
         let [day, month, year] = operation.Date.split('/');

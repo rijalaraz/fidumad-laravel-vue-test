@@ -156,7 +156,7 @@ th.active .arrow {
   display: -webkit-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
-  width: 1000px;
+  width: 100%;
 }
 
 .wrapper{
