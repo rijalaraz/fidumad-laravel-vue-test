@@ -21,9 +21,9 @@
         {{ title }}
       </div>
 
-      <div class="links">
+      <!--div class="links">
         <a href="https://github.com/cretueusebiu/laravel-vue-spa">github.com/cretueusebiu/laravel-vue-spa</a>
-      </div>
+      </div-->
     </div>
   </div>
 </template>
