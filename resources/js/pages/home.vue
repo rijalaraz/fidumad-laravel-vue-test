@@ -27,6 +27,8 @@ import Grid from './../components/Grid'
 import moment from 'moment'
 import Swal from 'sweetalert2'
 import i18n from '~/plugins/i18n'
+import accounting from 'accounting'
+import getSymbolFromCurrency from 'currency-symbol-map'
 
 export default {
   components: { 
@@ -42,7 +44,7 @@ export default {
       rib: ''
     }),
     gridData: [],
-    gridColumns: ['RIB', 'Date', 'Libelle', 'Montant'],
+    gridColumns: ['RIB', 'Date', 'Libelle', 'Montant', 'Recette', 'Dépense'],
   }),
 
   methods: {
@@ -84,6 +86,13 @@ export default {
         let [dayB, monthB, yearB] = b.Date.split('/');
         let datyB = new Date(yearB + '-' + monthB +'-' + dayB + " UTC");
         return datyB - datyA;
+      }).map(operation => {
+          let currency = operation.Devise == 'Euro' ? getSymbolFromCurrency('EUR') : getSymbolFromCurrency(operation.Devise);
+          let montant = accounting.unformat(currency + " " + operation.Montant, ",");
+          operation.Recette = montant > 0 ? accounting.formatMoney(montant, currency, 2, ".", ",") : accounting.formatMoney(0, currency, 2, ".", ",");
+          operation.Montant = accounting.formatMoney(montant, currency, 2, ".", ",");
+          operation.Dépense = montant < 0 ? accounting.formatMoney(Math.abs(montant), currency, 2, ".", ",") : accounting.formatMoney(0, currency, 2, ".", ",");
+          return operation;
       });
 
       // this.form.reset()
