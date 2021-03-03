@@ -1,5 +1,5 @@
-# fidumad-laravel-vue-test
-Laravel vue
+# Laravel Vue
+Procédure d'installation
 
 - Cloner le repository https://github.com/rijalaraz/fidumad-laravel-vue-test dans un serveur fonctionnant avec php 7.4 et probablement MySQL 5.7
 
