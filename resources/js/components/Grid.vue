@@ -9,7 +9,6 @@
                 <thead>
                 <th v-for="(key, idx) in columns"
                     :key="idx"
-                    @click="sortBy(key)"
                     :class="{ active: sortKey == key }"
                 >
                     {{ key | capitalize }}
