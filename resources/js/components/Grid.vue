@@ -1,8 +1,8 @@
 <template>
    <div class="wrapper">
-        <form id="search">
+        <!--form id="search">
             Search <input name="query" v-model="searchQuery">
-        </form>
+        </form-->
         <div id="grid-template">
             <div class="table-header-wrapper">
             <table class="table-header">
@@ -13,7 +13,7 @@
                     :class="{ active: sortKey == key }"
                 >
                     {{ key | capitalize }}
-                    <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'"></span>
+                    <!--span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'"></span-->
                 </th>
                 </thead>
             </table>
